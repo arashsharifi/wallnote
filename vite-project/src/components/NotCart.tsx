@@ -6,11 +6,11 @@ import { RiEdit2Fill } from "react-icons/ri";
 interface NotCartProps {
   title: string;
   desc: string;
-  time: string;
+  productionDate: string;
 }
 
-export default function NotCart({ title, desc, time }: NotCartProps) {
-  const date = new Date(time);
+export default function NotCart({ title, desc, productionDate }: NotCartProps) {
+  const date = new Date(productionDate);
 
   const options: Intl.DateTimeFormatOptions = {
     weekday: "long",

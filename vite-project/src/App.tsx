@@ -30,7 +30,7 @@ const App: React.FC = () => {
   const [currentPalette, setCurrentPalette] = useState<Palette>(
     paletteObjArrey[0]
   );
-  const [modal, setModal] = useState<boolean>(true); 
+  const [modal, setModal] = useState<boolean>(false); 
   const [applicationStatus, setApplicationStatus] = useState<string>("");
   const [dataAdd, setDataAdd] = useState<DataAdd>({
     title: "",
@@ -44,27 +44,27 @@ const App: React.FC = () => {
     {
       title: "لورم ایپسوم ۱",
       desc: "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ.",
-      time: "2024-07-16",
+      productionDate: "2024-07-16",
     },
     {
       title: "لورم ایپسوم ۲",
       desc: "لورم ایپسوم از زمان‌های قدیم به عنوان متن استاندارد صنعت چاپ استفاده می‌شده است.",
-      time: "2024-07-17",
+      productionDate: "2024-07-17",
     },
     {
       title: "لورم ایپسوم ۳",
       desc: "لورم ایپسوم به عنوان یک متن ساختگی در صنعت چاپ مورد استفاده قرار می‌گیرد.",
-      time: "2024-07-18",
+      productionDate: "2024-07-18",
     },
     {
       title: "لورم ایپسوم ۴",
       desc: "لورم ایپسوم در چاپ و نشر به عنوان متن نمونه و بی‌معنی برای پر کردن فضا استفاده می‌شود.",
-      time: "2024-07-19",
+      productionDate: "2024-07-19",
     },
     {
       title: "لورم ایپسوم ۵",
       desc: "لورم ایپسوم به عنوان یک متن ساختگی و بی‌معنی در صنعت چاپ و نشر مورد استفاده قرار می‌گیرد.",
-      time: "2024-07-20",
+      productionDate: "2024-07-20",
     }
   
   ];
@@ -102,13 +102,13 @@ const App: React.FC = () => {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-3 gap-4">
         {dummyData.map((item, index) => (
-            <NotCart key={index} title={item.title} desc={item.desc} time={item.time} />
+            <NotCart key={index} title={item.title} desc={item.desc} productionDate={item.productionDate} />
           ))}
         </div>
       </div>
       <Modal isOpen={modal} onClose={() => setModal(false)}>
       {applicationStatus === 'addform' && <AddForm />}
-       <p>sasdsadasd</p>
+
       </Modal>
     </div>
   );

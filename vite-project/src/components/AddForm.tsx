@@ -13,14 +13,14 @@ moment.loadPersian({ dialect: 'persian-modern', usePersianDigits: true });
 
 interface IFormInputs {
   title: string;
-  details: string;
+  desc: string;
   productionDate: Date | null;
   expirationDate: Date | null;
 }
 
 const schema = yup.object().shape({
   title: yup.string().required('لطفا فیلد مورد نظر را پر کنید'),
-  details: yup.string().required('لطفا فیلد مورد نظر را پر کنید'),
+  desc: yup.string().required('لطفا فیلد مورد نظر را پر کنید'),
   productionDate: yup.date().nullable().required('لطفا فیلد مورد نظر را پر کنید'),
   expirationDate: yup.date().nullable().required('لطفا فیلد مورد نظر را پر کنید'),
 });
@@ -61,12 +61,12 @@ const AddForm: React.FC = () => {
           <label className="mb-2 text-lg font-medium text-gray-700">جزئیات:</label>
           <input 
             type="text" 
-            {...register('details')} 
+            {...register('desc')} 
             className={`p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-              errors.details ? 'border-red-500' : 'border-gray-300'
+              errors.desc ? 'border-red-500' : 'border-gray-300'
             }`}
           />
-          {errors.details && <p className="text-red-600 text-sm mt-1">{errors.details.message}</p>}
+          {errors.desc && <p className="text-red-600 text-sm mt-1">{errors.desc.message}</p>}
         </div>
 
         <div className="flex flex-col">
