@@ -4,12 +4,20 @@ import Navbar from "./components/Navbar";
 import { CiSearch } from "react-icons/ci";
 import NotCart from "./components/NotCart";
 import Modal from "./components/Modal";
+import AddForm from "./components/AddForm";
 
 interface Palette {
   id: number;
   colorOne: string;
   colorTwo: string;
   name: string;
+}
+
+interface DataAdd {
+  title: string;
+  details: string;
+  productionDate: string;
+  expirationDate: string;
 }
 
 const paletteObjArrey: Palette[] = [
@@ -23,6 +31,14 @@ const App: React.FC = () => {
     paletteObjArrey[0]
   );
   const [modal, setModal] = useState<boolean>(true); 
+  const [applicationStatus, setApplicationStatus] = useState<string>("");
+  const [dataAdd, setDataAdd] = useState<DataAdd>({
+    title: "",
+    details: "",
+    productionDate: "",
+    expirationDate: "",
+  });
+
 
   const dummyData = [
     {
@@ -63,6 +79,10 @@ const App: React.FC = () => {
       <Navbar
         currentPalette={currentPalette}
         setCurrentPalette={setCurrentPalette}
+        modal={modal}          
+        setModal={setModal}
+        applicationStatus={applicationStatus} 
+        setApplicationStatus={setApplicationStatus}    
       />
       <div
         className="flex flex-col gap-1 mt-20"
@@ -87,7 +107,8 @@ const App: React.FC = () => {
         </div>
       </div>
       <Modal isOpen={modal} onClose={() => setModal(false)}>
-        <p className="text-lg">این یک مودال است!</p>
+      {applicationStatus === 'addform' && <AddForm />}
+       <p>sasdsadasd</p>
       </Modal>
     </div>
   );

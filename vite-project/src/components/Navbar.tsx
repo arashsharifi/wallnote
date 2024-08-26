@@ -12,6 +12,10 @@ interface Palette {
 interface NavbarProps {
   currentPalette: Palette;
   setCurrentPalette: (palette: Palette) => void;
+  modal: boolean;        
+  setModal: (open: boolean) => void;
+  applicationStatus: string;       
+  setApplicationStatus: (status: string) => void;  
 }
 
 const paletteObjArrey: Palette[] = [
@@ -24,6 +28,10 @@ const paletteObjArrey: Palette[] = [
 const Navbar: React.FC<NavbarProps> = ({
   currentPalette,
   setCurrentPalette,
+  modal,
+  setModal,
+  applicationStatus,
+  setApplicationStatus, 
 }) => {
   const [onPalette, setOnPalette] = useState<boolean>(false);
 
@@ -40,7 +48,10 @@ const Navbar: React.FC<NavbarProps> = ({
       <div className="flex gap-3 p-2 w-[70%] items-center">
         <div
           className="bg-blue-300 w-12 h-12 rounded-full p-3 flex items-center justify-center cursor-pointer duration-200 hover:shadow-xl hover:shadow-black"
-          onClick={() => console.log("sdfsd")}
+          onClick={() =>{ 
+            setModal(true)
+            setApplicationStatus('addform')
+          }}
         >
           <FaPlus className="text-colors-myWhite" />
         </div>
