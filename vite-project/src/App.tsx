@@ -5,6 +5,7 @@ import { CiSearch } from "react-icons/ci";
 import NotCart from "./components/NotCart";
 import Modal from "./components/Modal";
 import AddForm from "./components/AddForm";
+import DeletComponent from "./components/DeletComponent";
 
 interface Palette {
   id: number;
@@ -22,21 +23,33 @@ interface Note {
 }
 
 const paletteObjArrey: Palette[] = [
-  { id: 1, colorOne: "#2C3E50", colorTwo: "#4C5B70", name: "navy-blue-palette" },
+  {
+    id: 1,
+    colorOne: "#2C3E50",
+    colorTwo: "#4C5B70",
+    name: "navy-blue-palette",
+  },
   { id: 2, colorOne: "#34495E", colorTwo: "#5D6D7E", name: "gray-palette" },
   { id: 3, colorOne: "#4E342E", colorTwo: "#6D4C41", name: "brown-palette" },
-  { id: 4, colorOne: "#2E4053", colorTwo: "#34495E", name: "dark-blue-palette" },
+  {
+    id: 4,
+    colorOne: "#2E4053",
+    colorTwo: "#34495E",
+    name: "dark-blue-palette",
+  },
 ];
 
 const App: React.FC = () => {
-  const [currentPalette, setCurrentPalette] = useState<Palette>(paletteObjArrey[0]);
+  const [currentPalette, setCurrentPalette] = useState<Palette>(
+    paletteObjArrey[0]
+  );
   const [modal, setModal] = useState<boolean>(false);
   const [applicationStatus, setApplicationStatus] = useState<string>("");
   const [localData, setLocalData] = useState<Note[]>([]);
 
   // تابع برای بارگذاری داده‌ها از localStorage
   const loadLocalData = () => {
-    const storedNotes = localStorage.getItem('notes');
+    const storedNotes = localStorage.getItem("notes");
     if (storedNotes) {
       setLocalData(JSON.parse(storedNotes));
     } else {
@@ -45,21 +58,38 @@ const App: React.FC = () => {
   };
 
   useEffect(() => {
-    loadLocalData(); 
+    loadLocalData();
     const handleStorageChange = (event: StorageEvent) => {
-      if (event.key === 'notes') {
+      if (event.key === "notes") {
         loadLocalData();
       }
     };
 
-    window.addEventListener('storage', handleStorageChange);
+    window.addEventListener("storage", handleStorageChange);
     return () => {
-      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener("storage", handleStorageChange);
     };
-  }, [modal]); 
+  }, [modal]);
 
   const handleAddFormSubmit = () => {
-    loadLocalData(); 
+    loadLocalData();
+  };
+
+  const deleteNote = (noteId: string) => {
+    // داده‌های موجود در localStorage را دریافت می‌کند
+    const storedNotes = localStorage.getItem("notes");
+    if (storedNotes) {
+      const notes: Note[] = JSON.parse(storedNotes);
+
+      // فیلتر کردن نوت‌هایی که آیدی آنها با آیدی مورد نظر تطابق ندارد (حذف نوت با آیدی مشخص)
+      const updatedNotes = notes.filter((note) => note.id !== noteId);
+
+      // به‌روزرسانی localStorage با آرایه نوت‌های فیلتر شده
+      localStorage.setItem("notes", JSON.stringify(updatedNotes));
+
+      // به‌روزرسانی state برای نمایش نوت‌های به‌روزشده
+      setLocalData(updatedNotes);
+    }
   };
 
   return (
@@ -95,9 +125,11 @@ const App: React.FC = () => {
         </div>
         <div className="p-3">
           {localData.length === 0 ? (
-            <p className="text-center text-gray-700 text-lg">
-              هیچ نوتی نداریم، لطفاً وارد نمایید.
-            </p>
+            <div className="border rounded-lg p-3 flex justify-center border-yellow-500">
+              <p className="text-center text-yellow-500  text-lg">
+                هیچ نوتی نداریم، لطفاً وارد نمایید.
+              </p>
+            </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {localData.map((item) => (
@@ -106,14 +138,29 @@ const App: React.FC = () => {
                   title={item.title}
                   desc={item.details}
                   productionDate={item.productionDate}
+                  applicationStatus={applicationStatus}
+                  setApplicationStatus={setApplicationStatus}
+                  setModal={setModal}
+                  modal={modal}
                 />
               ))}
             </div>
           )}
         </div>
       </div>
-      <Modal isOpen={modal} onClose={() => { setModal(false); handleAddFormSubmit(); }}>
-        {applicationStatus === 'addform' && <AddForm setModal={setModal} modal={modal} />}
+      <Modal
+        applicationStatus={applicationStatus}
+        setApplicationStatus={setApplicationStatus}
+        isOpen={modal}
+        onClose={() => {
+          setModal(false);
+          handleAddFormSubmit();
+        }}
+      >
+        {applicationStatus === "addform" && (
+          <AddForm setModal={setModal} modal={modal} />
+        )}
+        {applicationStatus === "deletcomponent" && <DeletComponent noteId={'ssdad'} />}
       </Modal>
     </div>
   );
