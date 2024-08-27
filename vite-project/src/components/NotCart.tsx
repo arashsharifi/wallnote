@@ -3,27 +3,42 @@ import { IoTrashOutline } from "react-icons/io5";
 import { RiEdit2Fill } from "react-icons/ri";
 import jalaali from "jalaali-js";
 
-// تعریف نوع Props
 interface NotCartProps {
   title: string;
   desc: string;
-  productionDate: string; // این پروپرتی دیگر استفاده نمی‌شود
+  modal: boolean;
+  setModal: (open: boolean) => void;
+  productionDate: string;
+  applicationStatus: string;
+  setApplicationStatus: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function NotCart({ title, desc,productionDate }: NotCartProps) {
-  const testTime = '1403/05/20';
+export default function NotCart({
+  title,
+  desc,
+  productionDate,
+  modal,
+  setModal,
+  applicationStatus,
+  setApplicationStatus,
+}: NotCartProps) {
+  const testTime = "1403/05/20";
 
   // تبدیل تاریخ شمسی به میلادی
-  const [year, month, day] = productionDate.split('/').map(Number);
+  const [year, month, day] = productionDate.split("/").map(Number);
   const gregorianDate = jalaali.toGregorian(year, month, day);
-  
+
   // استخراج اطلاعات تاریخ میلادی
-  const date = new Date(gregorianDate.gy, gregorianDate.gm - 1, gregorianDate.gd);
+  const date = new Date(
+    gregorianDate.gy,
+    gregorianDate.gm - 1,
+    gregorianDate.gd
+  );
   const options: Intl.DateTimeFormatOptions = {
     weekday: "long",
     year: "numeric",
     month: "long",
-    day: "numeric"
+    day: "numeric",
   };
 
   const formatter = new Intl.DateTimeFormat("fa-IR", options);
@@ -39,7 +54,9 @@ export default function NotCart({ title, desc,productionDate }: NotCartProps) {
   return (
     <div className="w-full bg-slate-100 rounded-md flex flex-col gap-2 justify-center p-4">
       <div className="flex p-3">
-        <p className="font-bold text-xl text-black text-start truncate">{title}</p>
+        <p className="font-bold text-xl text-black text-start truncate">
+          {title}
+        </p>
       </div>
       <div className="flex p-3">
         <p className="text-gray-400 text-start line-clamp-2">{desc}</p>
@@ -55,7 +72,13 @@ export default function NotCart({ title, desc,productionDate }: NotCartProps) {
           <p className="text-[14px] text-gray-500">{yearStr}</p>
         </div>
         <div className="flex gap-2">
-          <IoTrashOutline className="text-red-600 text-lg" />
+          <IoTrashOutline
+            onClick={() => {
+              setApplicationStatus("deletcomponent")
+              setModal(true)
+            }}
+            className="text-red-600 text-lg cursor-pointer"
+          />
           <RiEdit2Fill className="text-slate-900 text-lg" />
         </div>
       </div>
