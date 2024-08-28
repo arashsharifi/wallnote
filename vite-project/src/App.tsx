@@ -6,6 +6,7 @@ import NotCart from "./components/NotCart";
 import Modal from "./components/Modal";
 import AddForm from "./components/AddForm";
 import DeletComponent from "./components/DeletComponent";
+import ShowDetails from "./components/ShowDetails";
 
 interface Palette {
   id: number;
@@ -45,6 +46,7 @@ const App: React.FC = () => {
   );
   const [modal, setModal] = useState<boolean>(false);
   const [applicationStatus, setApplicationStatus] = useState<string>("");
+  const [addId, setAddId] = useState<string>("");
   const [localData, setLocalData] = useState<Note[]>([]);
 
   // تابع برای بارگذاری داده‌ها از localStorage
@@ -91,7 +93,7 @@ const App: React.FC = () => {
       setLocalData(updatedNotes);
     }
   };
-
+  console.log("addId", addId);
   return (
     <div
       className="flex flex-col rtl font-iransans h-[100vh] w-full"
@@ -137,11 +139,14 @@ const App: React.FC = () => {
                   key={item.id}
                   title={item.title}
                   desc={item.details}
+                  id={item.id}
                   productionDate={item.productionDate}
                   applicationStatus={applicationStatus}
                   setApplicationStatus={setApplicationStatus}
                   setModal={setModal}
                   modal={modal}
+                  addId={addId}
+                  setAddId={setAddId}
                 />
               ))}
             </div>
@@ -160,7 +165,17 @@ const App: React.FC = () => {
         {applicationStatus === "addform" && (
           <AddForm setModal={setModal} modal={modal} />
         )}
-        {applicationStatus === "deletcomponent" && <DeletComponent noteId={'ssdad'} />}
+        {applicationStatus === "deletcomponent" && (
+          <DeletComponent
+            addId={addId}
+            localData={localData}
+            setLocalData={setLocalData}
+            setModal={setModal}
+          />
+        )}
+        {applicationStatus === "showdetails" && (
+          <ShowDetails note={localData.find((note) => note.id === addId)!} />
+        )}
       </Modal>
     </div>
   );
