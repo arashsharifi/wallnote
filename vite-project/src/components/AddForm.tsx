@@ -60,9 +60,9 @@ const AddForm: React.FC<AddFormProps> = ({ modal, setModal }) => {
   };
 
   return (
-    <div className="mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg font-iransans h-full">
-      <h2 className="text-2xl font-bold mb-1 text-center">فرم افزودن اطلاعات</h2>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <div className="mx-auto mt-3 p-6 bg-white shadow-lg rounded-lg font-iransans h-full">
+      <h2 className="text-2xl font-bold  text-center">فرم افزودن اطلاعات</h2>
+      <form onSubmit={handleSubmit(onSubmit)}  >
         <div className="flex flex-col">
           <label className="text-lg font-medium text-gray-700">عنوان:</label>
           <input 
@@ -77,10 +77,9 @@ const AddForm: React.FC<AddFormProps> = ({ modal, setModal }) => {
 
         <div className="flex flex-col">
           <label className="mb-2 text-lg font-medium text-gray-700">جزئیات:</label>
-          <input 
-            type="text" 
+          <textarea 
             {...register('details')} 
-            className={`p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+            className={`p-3 h-32 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none ${
               errors.details ? 'border-red-500' : 'border-gray-300'
             }`}
           />

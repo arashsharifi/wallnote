@@ -7,10 +7,13 @@ interface NotCartProps {
   title: string;
   desc: string;
   modal: boolean;
+  id:string;
   setModal: (open: boolean) => void;
   productionDate: string;
   applicationStatus: string;
   setApplicationStatus: React.Dispatch<React.SetStateAction<string>>;
+  addId:string;
+  setAddId:React.Dispatch<React.SetStateAction<string>>
 }
 
 export default function NotCart({
@@ -21,6 +24,9 @@ export default function NotCart({
   setModal,
   applicationStatus,
   setApplicationStatus,
+  addId,
+  setAddId,
+  id
 }: NotCartProps) {
   const testTime = "1403/05/20";
 
@@ -61,7 +67,11 @@ export default function NotCart({
       <div className="flex p-3">
         <p className="text-gray-400 text-start line-clamp-2">{desc}</p>
       </div>
-      <p className="text-gray-600 font-bold duration-200 hover:underline cursor-pointer">
+      <p onClick={()=>{
+            setApplicationStatus('showdetails')
+            setModal(true)
+            setAddId(id)
+          }} className="text-gray-600 font-bold duration-200 hover:underline cursor-pointer">
         جزئیات بیشتر
       </p>
       <div className="w-full flex p-2 justify-between items-center">
@@ -76,10 +86,11 @@ export default function NotCart({
             onClick={() => {
               setApplicationStatus("deletcomponent")
               setModal(true)
+              setAddId(id)
             }}
             className="text-red-600 text-lg cursor-pointer"
           />
-          <RiEdit2Fill className="text-slate-900 text-lg" />
+          <RiEdit2Fill  className="text-slate-900 text-lg cursor-pointer" />
         </div>
       </div>
     </div>
