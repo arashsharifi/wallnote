@@ -21,6 +21,8 @@ interface Note {
   details: string;
   productionDate: string;
   expirationDate: string;
+  productionTime: string;
+  expirationTime: string;
 }
 
 const paletteObjArrey: Palette[] = [
@@ -77,23 +79,24 @@ const App: React.FC = () => {
     loadLocalData();
   };
 
-  const deleteNote = (noteId: string) => {
-    // داده‌های موجود در localStorage را دریافت می‌کند
-    const storedNotes = localStorage.getItem("notes");
-    if (storedNotes) {
-      const notes: Note[] = JSON.parse(storedNotes);
+  // const deleteNote = (noteId: string) => {
+  //   // داده‌های موجود در localStorage را دریافت می‌کند
+  //   const storedNotes = localStorage.getItem("notes");
+  //   if (storedNotes) {
+  //     const notes: Note[] = JSON.parse(storedNotes);
 
-      // فیلتر کردن نوت‌هایی که آیدی آنها با آیدی مورد نظر تطابق ندارد (حذف نوت با آیدی مشخص)
-      const updatedNotes = notes.filter((note) => note.id !== noteId);
+  //     // فیلتر کردن نوت‌هایی که آیدی آنها با آیدی مورد نظر تطابق ندارد (حذف نوت با آیدی مشخص)
+  //     const updatedNotes = notes.filter((note) => note.id !== noteId);
 
-      // به‌روزرسانی localStorage با آرایه نوت‌های فیلتر شده
-      localStorage.setItem("notes", JSON.stringify(updatedNotes));
+  //     // به‌روزرسانی localStorage با آرایه نوت‌های فیلتر شده
+  //     localStorage.setItem("notes", JSON.stringify(updatedNotes));
 
-      // به‌روزرسانی state برای نمایش نوت‌های به‌روزشده
-      setLocalData(updatedNotes);
-    }
-  };
-  console.log("addId", addId);
+  //     // به‌روزرسانی state برای نمایش نوت‌های به‌روزشده
+  //     setLocalData(updatedNotes);
+  //   }
+  // };
+  // console.log("addId", addId);
+  // console.log("localData", localData);
   return (
     <div
       className="flex flex-col rtl font-iransans h-[100vh] w-full"
@@ -141,6 +144,9 @@ const App: React.FC = () => {
                   desc={item.details}
                   id={item.id}
                   productionDate={item.productionDate}
+                  expirationDate={item.expirationDate}
+                  productionTime={item.productionTime}
+                  expirationTime={item.expirationTime}
                   applicationStatus={applicationStatus}
                   setApplicationStatus={setApplicationStatus}
                   setModal={setModal}
@@ -174,7 +180,16 @@ const App: React.FC = () => {
           />
         )}
         {applicationStatus === "showdetails" && (
-          <ShowDetails note={localData.find((note) => note.id === addId)!} />
+          <ShowDetails
+            note={localData.find((note) => note.id === addId)!}
+            borderColor={currentPalette.colorOne}
+            titleColor={currentPalette.colorTwo}
+            detailColor={currentPalette.colorTwo}
+            circleColor={currentPalette.colorOne}
+            localData={localData}
+            setLocalData={setLocalData} 
+            setModal={setModal} 
+          />
         )}
       </Modal>
     </div>
