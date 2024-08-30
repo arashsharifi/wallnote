@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { IoTrashOutline } from "react-icons/io5";
 import { RiEdit2Fill } from "react-icons/ri";
 import jalaali from "jalaali-js";
+import { DraggableProvided } from 'react-beautiful-dnd';
 
 interface NotCartProps {
   title: string;
@@ -17,6 +18,7 @@ interface NotCartProps {
   setApplicationStatus: React.Dispatch<React.SetStateAction<string>>;
   addId: string;
   setAddId: React.Dispatch<React.SetStateAction<string>>;
+  provided: DraggableProvided; // اضافه کردن این خط
 }
 
 const NotCart: React.FC<NotCartProps> = ({
@@ -32,6 +34,7 @@ const NotCart: React.FC<NotCartProps> = ({
   setAddId,
   expirationTime,
   productionTime,
+  provided,
   id,
 }) => {
   const toGregorian = (jalaliDate: string) => {
@@ -107,6 +110,9 @@ const NotCart: React.FC<NotCartProps> = ({
 
   return (
     <div
+      ref={provided.innerRef}
+      {...provided.draggableProps}
+      {...provided.dragHandleProps}
       className={`w-full rounded-md flex flex-col gap-2 justify-center p-4 ${
         expired
           ? "border-3 border-red-600 bg-red-100"
@@ -147,14 +153,14 @@ const NotCart: React.FC<NotCartProps> = ({
               : `${dayName2} ${dayOfMonth2} ${monthName2} ${yearStr2}`}
           </p>
         </div>
-        <div className="flex gap-2 items-center     self-end">
+        <div className="flex gap-2 items-center self-end">
           <IoTrashOutline
             onClick={() => {
               setApplicationStatus("deletcomponent");
               setModal(true);
               setAddId(id);
             }}
-            className=" text-lg text-red-600 shadow  duration-200 hover:shadow-black  cursor-pointer"
+            className="text-lg text-red-600 shadow duration-200 hover:shadow-black cursor-pointer"
           />
           <RiEdit2Fill
             onClick={() => {
@@ -162,7 +168,7 @@ const NotCart: React.FC<NotCartProps> = ({
               setModal(true);
               setAddId(id);
             }}
-            className=" text-lg text-black shadow  duration-200  hover:shadow-black"
+            className="text-lg text-black shadow duration-200 hover:shadow-black"
           />
         </div>
       </div>

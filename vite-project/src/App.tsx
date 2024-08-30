@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { CiChat2 } from "react-icons/ci";
-import Navbar from "./components/Navbar";
 import { CiSearch } from "react-icons/ci";
+import Navbar from "./components/Navbar";
 import NotCart from "./components/NotCart";
 import Modal from "./components/Modal";
 import AddForm from "./components/AddForm";
 import DeletComponent from "./components/DeletComponent";
 import ShowDetails from "./components/ShowDetails";
+import {
+  DragDropContext,
+  Draggable,
+  DroppableProvided,
+  DropResult,
+} from "react-beautiful-dnd";
+import StrictModeDroppable from "./components/StrictModeDroppable";
 
 interface Palette {
   id: number;
@@ -25,7 +31,7 @@ interface Note {
   expirationTime: string;
 }
 
-const paletteObjArrey: Palette[] = [
+const paletteObjArray: Palette[] = [
   {
     id: 1,
     colorOne: "#2C3E50",
@@ -44,14 +50,13 @@ const paletteObjArrey: Palette[] = [
 
 const App: React.FC = () => {
   const [currentPalette, setCurrentPalette] = useState<Palette>(
-    paletteObjArrey[0]
+    paletteObjArray[0]
   );
   const [modal, setModal] = useState<boolean>(false);
   const [applicationStatus, setApplicationStatus] = useState<string>("");
   const [addId, setAddId] = useState<string>("");
   const [localData, setLocalData] = useState<Note[]>([]);
 
-  // تابع برای بارگذاری داده‌ها از localStorage
   const loadLocalData = () => {
     const storedNotes = localStorage.getItem("notes");
     if (storedNotes) {
@@ -79,27 +84,49 @@ const App: React.FC = () => {
     loadLocalData();
   };
 
-  // const deleteNote = (noteId: string) => {
-  //   // داده‌های موجود در localStorage را دریافت می‌کند
-  //   const storedNotes = localStorage.getItem("notes");
-  //   if (storedNotes) {
-  //     const notes: Note[] = JSON.parse(storedNotes);
+  // Reorder items in the array
+  const reorder = (array: Note[], fromIndex: number, toIndex: number): Note[] => {
+    const newArr = [...array];
+    const [movedItem] = newArr.splice(fromIndex, 1);
+    newArr.splice(toIndex, 0, movedItem);
+    return newArr;
+  };
 
-  //     // فیلتر کردن نوت‌هایی که آیدی آنها با آیدی مورد نظر تطابق ندارد (حذف نوت با آیدی مشخص)
-  //     const updatedNotes = notes.filter((note) => note.id !== noteId);
+  // Move item within the same list
+  const move = (source: { index: number; droppableId: string }, destination: { index: number; droppableId: string }, items: Note[]): Note[] => {
+    const itemsClone = [...items];
+    const [removedItem] = itemsClone.splice(source.index, 1);
+    itemsClone.splice(destination.index, 0, removedItem);
+    return itemsClone;
+  };
 
-  //     // به‌روزرسانی localStorage با آرایه نوت‌های فیلتر شده
-  //     localStorage.setItem("notes", JSON.stringify(updatedNotes));
+  const onDragEnd = (result: DropResult) => {
+    const { source, destination } = result;
 
-  //     // به‌روزرسانی state برای نمایش نوت‌های به‌روزشده
-  //     setLocalData(updatedNotes);
-  //   }
-  // };
-  // console.log("addId", addId);
-  // console.log("localData", localData);
+    // If dropped outside the list
+    if (!destination) {
+      return;
+    }
+
+    // If dropped in the same list
+    if (source.droppableId === destination.droppableId) {
+      const reorderedItems = reorder(
+        localData,
+        source.index,
+        destination.index
+      );
+      setLocalData(reorderedItems);
+    } else {
+      // In this example, we assume there is only one list
+      // If you have multiple lists, handle them here
+      const movedItems = move(source, destination, localData);
+      setLocalData(movedItems);
+    }
+  };
+
   return (
     <div
-      className="flex flex-col rtl font-iransans h-[100vh] w-full"
+      className="flex flex-col rtl font-iransans h-full w-full"
       style={{
         backgroundImage: `linear-gradient(${currentPalette.colorOne}, ${currentPalette.colorTwo})`,
       }}
@@ -113,7 +140,7 @@ const App: React.FC = () => {
         setApplicationStatus={setApplicationStatus}
       />
       <div
-        className="flex flex-col gap-1 mt-20"
+        className="flex flex-col gap-1 mt-20 w-full h-full"
         style={{
           backgroundImage: `linear-gradient(${currentPalette.colorOne}, ${currentPalette.colorTwo})`,
         }}
@@ -128,33 +155,60 @@ const App: React.FC = () => {
             <CiSearch className="text-colors-myWhite text-xl font-bold" />
           </div>
         </div>
-        <div className="p-3">
+        <div className="p-3 w-full h-full">
           {localData.length === 0 ? (
             <div className="border rounded-lg p-3 flex justify-center border-yellow-500">
-              <p className="text-center text-yellow-500  text-lg">
+              <p className="text-center text-yellow-500 text-lg">
                 هیچ نوتی نداریم، لطفاً وارد نمایید.
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {localData.map((item) => (
-                <NotCart
-                  key={item.id}
-                  title={item.title}
-                  desc={item.details}
-                  id={item.id}
-                  productionDate={item.productionDate}
-                  expirationDate={item.expirationDate}
-                  productionTime={item.productionTime}
-                  expirationTime={item.expirationTime}
-                  applicationStatus={applicationStatus}
-                  setApplicationStatus={setApplicationStatus}
-                  setModal={setModal}
-                  modal={modal}
-                  addId={addId}
-                  setAddId={setAddId}
-                />
-              ))}
+            <div className="w-full h-full bg-blue-600 mx-auto ">
+              <DragDropContext onDragEnd={onDragEnd}>
+                <StrictModeDroppable droppableId="fields" type="FIELD">
+                  {(provided: DroppableProvided) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.droppableProps}
+                      className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+                    >
+                      {localData.map((item, index) => (
+                        <Draggable
+                          key={item.id}
+                          draggableId={item.id}
+                          index={index}
+                        >
+                          {(provided: DraggableProvided) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                            >
+                              <NotCart
+                                title={item.title}
+                                desc={item.details}
+                                id={item.id}
+                                productionDate={item.productionDate}
+                                expirationDate={item.expirationDate}
+                                productionTime={item.productionTime}
+                                expirationTime={item.expirationTime}
+                                applicationStatus={applicationStatus}
+                                setApplicationStatus={setApplicationStatus}
+                                setModal={setModal}
+                                modal={modal}
+                                addId={addId}
+                                setAddId={setAddId}
+                                provided={provided}
+                              />
+                            </div>
+                          )}
+                        </Draggable>
+                      ))}
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </StrictModeDroppable>
+              </DragDropContext>
             </div>
           )}
         </div>
@@ -166,7 +220,7 @@ const App: React.FC = () => {
         onClose={() => {
           setModal(false);
           handleAddFormSubmit();
-          setAddId('')
+          setAddId("");
         }}
       >
         {applicationStatus === "addform" && (
@@ -188,8 +242,8 @@ const App: React.FC = () => {
             detailColor={currentPalette.colorTwo}
             circleColor={currentPalette.colorOne}
             localData={localData}
-            setLocalData={setLocalData} 
-            setModal={setModal} 
+            setLocalData={setLocalData}
+            setModal={setModal}
           />
         )}
       </Modal>
