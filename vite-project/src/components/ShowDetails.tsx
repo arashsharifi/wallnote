@@ -3,7 +3,9 @@ import jalaali from "jalaali-js";
 import { Note } from "./App"; // Assume Note is defined in App.tsx
 import { FaRegSave } from "react-icons/fa";
 import { RxDoubleArrowLeft, RxDoubleArrowRight } from "react-icons/rx";
-
+import DatePicker from "react-datepicker";
+import TimePicker from "react-time-picker";
+import "react-datepicker/dist/react-datepicker.css";
 interface ShowDetailsProps {
   note: Note;
   borderColor: string;

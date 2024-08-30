@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { IoTrashOutline } from "react-icons/io5";
 import { RiEdit2Fill } from "react-icons/ri";
 import jalaali from "jalaali-js";
@@ -53,6 +53,18 @@ const NotCart: React.FC<NotCartProps> = ({
     return now > expirationDateTime;
   };
 
+  const [expired, setExpired] = useState<boolean>(
+    isExpired(expirationDate, expirationTime)
+  );
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setExpired(isExpired(expirationDate, expirationTime));
+    }, 60000); // چک کردن هر 60 ثانیه
+
+    return () => clearInterval(interval); // پاک کردن interval هنگام unmount شدن کامپوننت
+  }, [expirationDate, expirationTime]);
+
   const [year, month, day] = productionDate.split("/").map(Number);
   const gregorianDate = jalaali.toGregorian(year, month, day);
   const date = new Date(
@@ -93,8 +105,6 @@ const NotCart: React.FC<NotCartProps> = ({
   const monthName2 = parts2[2]; // نام ماه
   const yearStr2 = parts2[3]; // سال
 
-  const expired = isExpired(expirationDate, expirationTime);
-
   return (
     <div
       className={`w-full rounded-md flex flex-col gap-2 justify-center p-4 ${
@@ -131,23 +141,29 @@ const NotCart: React.FC<NotCartProps> = ({
         </div>
         <div className="flex items-center gap-2 self-start">
           <p className="text-[14px] text-gray-500">انقضا:</p>
-          <p className="text-[14px] text-gray-500 ">
-            {expired ? (
-              <p className="underline text-red-600">منقضی</p>
-            ) : (
-              `${dayName2} ${dayOfMonth2} ${monthName2} ${yearStr2}`
-            )}
+          <p className="text-[14px] text-gray-500">
+            {expired
+              ? "منقضی"
+              : `${dayName2} ${dayOfMonth2} ${monthName2} ${yearStr2}`}
           </p>
         </div>
-        <div
-          onClick={() => {
-            setApplicationStatus("deletcomponent");
-            setModal(true);
-            setAddId(id);
-          }}
-          className="flex gap-2 self-end bg-red-600 rounded-md hover:shadow-black w-14 h-8 items-center justify-center cursor-pointer"
-        >
-          <IoTrashOutline className="text-colors-myWhite text-lg " />
+        <div className="flex gap-2 items-center     self-end">
+          <IoTrashOutline
+            onClick={() => {
+              setApplicationStatus("deletcomponent");
+              setModal(true);
+              setAddId(id);
+            }}
+            className=" text-lg text-red-600 shadow  duration-200 hover:shadow-black  cursor-pointer"
+          />
+          <RiEdit2Fill
+            onClick={() => {
+              setApplicationStatus("addform");
+              setModal(true);
+              setAddId(id);
+            }}
+            className=" text-lg text-black shadow  duration-200  hover:shadow-black"
+          />
         </div>
       </div>
     </div>
