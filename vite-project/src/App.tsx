@@ -166,10 +166,11 @@ const App: React.FC = () => {
         onClose={() => {
           setModal(false);
           handleAddFormSubmit();
+          setAddId('')
         }}
       >
         {applicationStatus === "addform" && (
-          <AddForm setModal={setModal} modal={modal} />
+          <AddForm setModal={setModal} modal={modal} addId={addId} />
         )}
         {applicationStatus === "deletcomponent" && (
           <DeletComponent
