@@ -144,7 +144,7 @@ const ShowDetails: React.FC<ShowDetailsProps> = ({
       </div>
       <div
         style={{ backgroundColor: titleColor }}
-        className="w-full p-4 rounded-lg shadow-lg h-[70vh] sm:h-[70vh]"
+        className="w-full p-4 rounded-lg shadow-lg h-[70vh] sm:h-[70vh]  lg:h-[50vh]"
       >
         <div
           className="bg-white p-3 rounded-lg border-l-8 shadow-md flex flex-col gap-3 relative h-full"

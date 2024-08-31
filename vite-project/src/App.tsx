@@ -56,6 +56,7 @@ const App: React.FC = () => {
   const [applicationStatus, setApplicationStatus] = useState<string>("");
   const [addId, setAddId] = useState<string>("");
   const [localData, setLocalData] = useState<Note[]>([]);
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   const loadLocalData = () => {
     const storedNotes = localStorage.getItem("notes");
@@ -84,7 +85,6 @@ const App: React.FC = () => {
     loadLocalData();
   };
 
-  // Reorder items in the array
   const reorder = (array: Note[], fromIndex: number, toIndex: number): Note[] => {
     const newArr = [...array];
     const [movedItem] = newArr.splice(fromIndex, 1);
@@ -92,8 +92,11 @@ const App: React.FC = () => {
     return newArr;
   };
 
-  // Move item within the same list
-  const move = (source: { index: number; droppableId: string }, destination: { index: number; droppableId: string }, items: Note[]): Note[] => {
+  const move = (
+    source: { index: number; droppableId: string },
+    destination: { index: number; droppableId: string },
+    items: Note[]
+  ): Note[] => {
     const itemsClone = [...items];
     const [removedItem] = itemsClone.splice(source.index, 1);
     itemsClone.splice(destination.index, 0, removedItem);
@@ -103,12 +106,10 @@ const App: React.FC = () => {
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
 
-    // If dropped outside the list
     if (!destination) {
       return;
     }
 
-    // If dropped in the same list
     if (source.droppableId === destination.droppableId) {
       const reorderedItems = reorder(
         localData,
@@ -117,16 +118,19 @@ const App: React.FC = () => {
       );
       setLocalData(reorderedItems);
     } else {
-      // In this example, we assume there is only one list
-      // If you have multiple lists, handle them here
       const movedItems = move(source, destination, localData);
       setLocalData(movedItems);
     }
   };
 
+
+  const filteredData = localData.filter((note) =>
+    note.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div
-      className="flex flex-col rtl font-iransans h-full w-full"
+      className="flex flex-col rtl font-iransans min-h-[100vh]  w-full"
       style={{
         backgroundImage: `linear-gradient(${currentPalette.colorOne}, ${currentPalette.colorTwo})`,
       }}
@@ -151,19 +155,21 @@ const App: React.FC = () => {
               className="outline-none border-none w-full bg-transparent placeholder:text-colors-myWhite"
               type="text"
               placeholder="سرچ کن"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
             <CiSearch className="text-colors-myWhite text-xl font-bold" />
           </div>
         </div>
         <div className="p-3 w-full h-full">
-          {localData.length === 0 ? (
+          {filteredData.length === 0 ? (
             <div className="border rounded-lg p-3 flex justify-center border-yellow-500">
               <p className="text-center text-yellow-500 text-lg">
                 هیچ نوتی نداریم، لطفاً وارد نمایید.
               </p>
             </div>
           ) : (
-            <div className="w-full h-full bg-blue-600 mx-auto ">
+            <div className="w-full h-full  mx-auto ">
               <DragDropContext onDragEnd={onDragEnd}>
                 <StrictModeDroppable droppableId="fields" type="FIELD">
                   {(provided: DroppableProvided) => (
@@ -172,7 +178,7 @@ const App: React.FC = () => {
                       {...provided.droppableProps}
                       className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
                     >
-                      {localData.map((item, index) => (
+                      {filteredData.map((item, index) => (
                         <Draggable
                           key={item.id}
                           draggableId={item.id}

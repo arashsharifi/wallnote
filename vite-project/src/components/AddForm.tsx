@@ -148,7 +148,7 @@ const AddForm: React.FC<AddFormProps> = ({ modal, setModal, addId }) => {
                 setProductionDate(date);
                 setValue('productionDate', formatDate(date));
               }}
-              className={`p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+              className={`p-3 w-[70%] border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                 errors.productionDate ? 'border-red-500' : 'border-gray-300'
               }`}
               dateFormat="P"
@@ -159,7 +159,7 @@ const AddForm: React.FC<AddFormProps> = ({ modal, setModal, addId }) => {
             {errors.productionDate && <p className="text-red-600 text-sm mt-1">{errors.productionDate.message}</p>}
           </div>
 
-          <div className="flex flex-col w-full">
+          <div className="flex flex-col ">
             <label className="mb-2 text-lg font-medium text-gray-700">ساعت تولید:</label>
             <DatePicker
               selected={productionTime}
@@ -171,7 +171,7 @@ const AddForm: React.FC<AddFormProps> = ({ modal, setModal, addId }) => {
               showTimeSelectOnly
               timeCaption="Time"
               dateFormat="HH:mm"
-              className={`p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+              className={`p-3 w-[90%]  border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                 errors.productionTime ? 'border-red-500' : 'border-gray-300'
               }`}
               placeholderText="ساعت تولید"
@@ -190,7 +190,7 @@ const AddForm: React.FC<AddFormProps> = ({ modal, setModal, addId }) => {
                 setExpirationDate(date);
                 setValue('expirationDate', formatDate(date));
               }}
-              className={`p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+              className={`p-3 w-[70%] border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                 errors.expirationDate ? 'border-red-500' : 'border-gray-300'
               }`}
               dateFormat="P"
@@ -213,7 +213,7 @@ const AddForm: React.FC<AddFormProps> = ({ modal, setModal, addId }) => {
               showTimeSelectOnly
               timeCaption="Time"
               dateFormat="HH:mm"
-              className={`p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+              className={`p-3 w-[90%] border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                 errors.expirationTime ? 'border-red-500' : 'border-gray-300'
               }`}
               placeholderText="ساعت انقضا"
