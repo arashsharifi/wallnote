@@ -120,10 +120,11 @@ const NotCart: React.FC<NotCartProps> = ({
       }`}
     >
       <div className="flex p-3">
-        <p className="font-bold text-xl text-black text-start truncate">
+        <p style={{animation:"arash2 2s"}}  className="font-bold text-xl text-black text-start truncate">
           {title}
         </p>
       </div>
+        {/* <div style={{animation:"arash 2s infinite"}} className="bg-[red] rounded-lg">4242</div> */}
       <div className="flex p-3">
         <p className="text-gray-400 text-start line-clamp-2">{desc}</p>
       </div>
