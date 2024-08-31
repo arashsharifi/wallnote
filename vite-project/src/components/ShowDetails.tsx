@@ -3,8 +3,7 @@ import jalaali from "jalaali-js";
 import { Note } from "./App"; // Assume Note is defined in App.tsx
 import { FaRegSave } from "react-icons/fa";
 import { RxDoubleArrowLeft, RxDoubleArrowRight } from "react-icons/rx";
-import DatePicker from "react-datepicker";
-import TimePicker from "react-time-picker";
+
 import "react-datepicker/dist/react-datepicker.css";
 interface ShowDetailsProps {
   note: Note;
@@ -122,12 +121,12 @@ const ShowDetails: React.FC<ShowDetailsProps> = ({
   return (
     <div className="flex w-full h-full flex-col p-1 ">
       <div className="w-full flex justify-between items-center p-2 mb-2">
-        <div
+        {/* <div
           style={{ backgroundColor: titleColor }}
           className="flex justify-center items-center rounded-md w-8 h-6 duration-200 hover:scale-110 cursor-pointer"
         >
           <RxDoubleArrowRight className="text-colors-myWhite" />
-        </div>
+        </div> */}
         <div
           style={{ backgroundColor: titleColor }}
           className="bg-gray-600 flex justify-center items-center rounded-md w-12 h-8 duration-200 hover:scale-110 cursor-pointer"
@@ -135,16 +134,16 @@ const ShowDetails: React.FC<ShowDetailsProps> = ({
         >
           <FaRegSave className="text-colors-myWhite" />
         </div>
-        <div
+        {/* <div
           style={{ backgroundColor: titleColor }}
           className="bg-gray-600 flex justify-center items-center rounded-md w-8 h-6 duration-200 hover:scale-110 cursor-pointer"
         >
           <RxDoubleArrowLeft className="text-colors-myWhite" />
-        </div>
+        </div> */}
       </div>
       <div
         style={{ backgroundColor: titleColor }}
-        className="w-full p-4 rounded-lg shadow-lg h-[70vh] sm:h-[70vh]  lg:h-[50vh]"
+        className="w-full p-4 rounded-lg shadow-lg h-[70vh] sm:h-[70vh]  lg:h-[80vh] 2xl:h-[50vh]"
       >
         <div
           className="bg-white p-3 rounded-lg border-l-8 shadow-md flex flex-col gap-3 relative h-full"

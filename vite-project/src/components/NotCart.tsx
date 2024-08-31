@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { IoTrashOutline } from "react-icons/io5";
 import { RiEdit2Fill } from "react-icons/ri";
 import jalaali from "jalaali-js";
-import { DraggableProvided } from 'react-beautiful-dnd';
+import { DraggableProvided } from "react-beautiful-dnd";
 
 interface NotCartProps {
   title: string;
@@ -120,13 +120,19 @@ const NotCart: React.FC<NotCartProps> = ({
       }`}
     >
       <div className="flex p-3">
-        <p style={{animation:"arash2 2s"}}  className="font-bold text-xl text-black text-start truncate">
-          {title}
-        </p>
+        <div className="flex flex-col gap-1 w-full ">
+          <p className="font-bold text-md text-gray-600 text-start">عنوان:</p>
+          <p
+            style={{ animation: "arash2 2s" }}
+            className="font-bold text-xl text-black text-start truncate"
+          >
+            {title}
+          </p>
+        </div>
       </div>
-        {/* <div style={{animation:"arash 2s infinite"}} className="bg-[red] rounded-lg">4242</div> */}
+      {/* <div style={{animation:"arash 2s infinite"}} className="bg-[red] rounded-lg">4242</div> */}
       <div className="flex p-3">
-        <p className="text-gray-400 text-start line-clamp-2">{desc}</p>
+        <p className="text-gray-400 text-start truncate">{desc}</p>
       </div>
       <p
         onClick={() => {

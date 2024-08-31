@@ -3,7 +3,7 @@ import { CiSearch } from "react-icons/ci";
 import Navbar from "./components/Navbar";
 import NotCart from "./components/NotCart";
 import Modal from "./components/Modal";
-import AddForm from "./components/AddForm";
+// import AddForm from "./components/AddForm";
 import DeletComponent from "./components/DeletComponent";
 import ShowDetails from "./components/ShowDetails";
 import {
@@ -13,7 +13,9 @@ import {
   DropResult,
 } from "react-beautiful-dnd";
 import StrictModeDroppable from "./components/StrictModeDroppable";
-import TestComponent from "./components/TestComponent";
+import AddFormV2 from "./components/AddFormV2";
+
+
 
 interface Palette {
   id: number;
@@ -231,7 +233,8 @@ const App: React.FC = () => {
         }}
       >
         {applicationStatus === "addform" && (
-          <AddForm setModal={setModal} modal={modal} addId={addId} />
+          // <AddForm setModal={setModal} modal={modal} addId={addId} />
+          <AddFormV2 setModal={setModal} modal={modal} addId={addId}/>
         )}
         {applicationStatus === "deletcomponent" && (
           <DeletComponent
@@ -254,7 +257,7 @@ const App: React.FC = () => {
           />
         )}
       </Modal>
-      <TestComponent/>
+     
     </div>
   );
 };
