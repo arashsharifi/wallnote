@@ -62,13 +62,13 @@ const AddForm: React.FC<AddFormProps> = ({ modal, setModal, addId }) => {
     }
   }, [addId, setValue]);
 
-  const formatDate = (date: Date | null): string | null => {
-    if (!date) return null;
+  const formatDate = (date: Date | null): string => {
+    if (!date) return '';  // در صورت null بودن، رشته خالی برمی‌گرداند
     return moment(date).format('jYYYY/jMM/jDD');
   };
 
-  const formatTime = (date: Date | null): string | null => {
-    if (!date) return null;
+  const formatTime = (date: Date | null): string => {
+    if (!date) return '';  // در صورت null بودن، رشته خالی برمی‌گرداند
     return moment(date).format('HH:mm');
   };
 
@@ -208,6 +208,7 @@ const AddForm: React.FC<AddFormProps> = ({ modal, setModal, addId }) => {
               onChange={(date) => {
                 setExpirationTime(date);
                 setValue('expirationTime', formatTime(date));
+             
               }}
               showTimeSelect
               showTimeSelectOnly
