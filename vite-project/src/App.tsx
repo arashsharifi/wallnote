@@ -13,6 +13,7 @@ import {
   DropResult,
 } from "react-beautiful-dnd";
 import StrictModeDroppable from "./components/StrictModeDroppable";
+import TestComponent from "./components/TestComponent";
 
 interface Palette {
   id: number;
@@ -253,6 +254,7 @@ const App: React.FC = () => {
           />
         )}
       </Modal>
+      <TestComponent/>
     </div>
   );
 };
